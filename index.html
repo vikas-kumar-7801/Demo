@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stone Paper Scissor Game </title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="download (18).jpeg">
+  <style>
+  body{
+      text-align: center;
+    }
+
+    table{
+      margin: 0 auto;
+    }
+
+    th,td{
+      border: 1px solid black;
+      padding: 10px;
+      font-size: larger;
+    }
+
+    td{
+      font-weight:800;
+    }
+
+
+
+    h2{
+      display: inline;
+    }
+
+    button{
+      background-color: transparent;
+    }
+
+    button:hover{
+      opacity: 0.8;
+    }
+
+    img{
+      height: 100px;
+    }
+
+    button { 
+      text-decoration: none; 
+      border: none; 
+      padding: 12px 40px; 
+      font-size: 16px; 
+      color: #fff; 
+      border-radius: 50%; 
+      box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24); 
+      cursor: pointer; 
+      outline: none; 
+      transition: 0.2s all; 
+      /* background-color: rgba(0, 0, 0); */
+    } 
+    /* Adding transformation when the button is active */ 
+
+    button:active { 
+      transform: scale(0.98); 
+      /* Scaling button to 0.98 to its original size */ 
+      box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+      /* Lowering the shadow */ 
+    } 
+  </style>
+</head>
+<body>
+  <h1>Stone Paper Scissor Game</h1>
+  <br>
+  <table>
+    <tr>
+      <th id="computer"></th>
+      <th id="you"></th>
+      <th id="tie"></th>
+      <th id="total"></th>
+    </tr>
+    <tr>
+      <td id="computerScore"></td>
+      <td id="yourScore"></td>
+      <td id="tieScore"></td>
+      <td id="totalScore"></td>
+    </tr>
+  </table>
+  <br>
+  <h1 id="result"></h1>
+  <h2 id="computerName"></h2><h2 id="computerChoice"></h2>
+  <br>
+  <h2 id="name"></h2><h2 id="userChoice"></h2>
+
+  <br><br>
+
+  <button title="Stone" onclick=" 
+  let computerChoice = cmChoice();
+  userChoice='Stone';
+  result(userChoice, computerChoice);
+  "><img src="https://static.thenounproject.com/png/477914-200.png" alt=""></button>
+
+  <button title="Paper" onclick="
+  computerChoice = cmChoice();
+  userChoice='Paper';
+  result(userChoice, computerChoice);
+  "><img src="https://static.thenounproject.com/png/477912-200.png" alt=""></button>
+
+  <button title="Scissors" onclick=" 
+  computerChoice = cmChoice();
+  userChoice='Scissor';
+  result(userChoice, computerChoice);
+  "><img src="https://media.geeksforgeeks.org/wp-content/uploads/20210705223721/scissor.jpeg" alt=""></button>
+
+  <script>
+        let name = prompt('Type your name, after press OK: ');
+
+
+    let score = {
+      win:0,
+      lost:0,
+      tie:0
+    };
+
+
+    function cmChoice() {
+      let randomNumber = Math.random()*3;
+      if(randomNumber > 0 && randomNumber <=1){
+        computerChoice = 'Stone';
+      }else if ( randomNumber > 1 && randomNumber <=2 ){
+        computerChoice = 'Paper';
+      }else {
+        computerChoice = 'Scissor';
+      }
+
+      return computerChoice;
+    }
+
+
+    function result(userChoice, computerChoice) {
+      let resultMsg, resultColor;
+      if(computerChoice === userChoice){
+        score.tie++;
+        resultMsg= 'Its a Tie!';
+        resultColor='chocolate';
+      }else if(userChoice === 'Scissor' && computerChoice === 'Stone' || userChoice === 'Paper' && computerChoice === 'Scissor' ||
+        userChoice === 'Stone' && computerChoice === 'Paper' ){
+        score.lost++;
+        resultMsg = 'Computer Won!';
+        resultColor='red';
+      }else if(userChoice === 'Stone' && computerChoice === 'Scissor' || userChoice === 'Scissor' && computerChoice === 'Paper' ||
+      userChoice === 'Paper' && computerChoice === 'Stone'){
+        score.win++;
+        resultMsg = 'You Won!';
+        resultColor='green';
+      } 
+      // document.querySelector('#computer').style.color='red';
+      document.querySelector('#computerScore').style.color='red';
+      document.querySelector('#computer').innerText = 'Computer';
+      document.querySelector('#computerScore').innerText = `${score.lost}`;
+
+      // document.querySelector('#you').style.color='green';
+      document.querySelector('#yourScore').style.color='green';
+      document.querySelector('#you').innerText = `${name}`;
+      document.querySelector('#yourScore').innerText = `${score.win}`;
+
+      // document.querySelector('#tie').style.color='chocolate';
+      document.querySelector('#tieScore').style.color='chocolate';
+      document.querySelector('#tie').innerText =`Tie`;
+      document.querySelector('#tieScore').innerText = `${score.tie}`;
+
+      
+      document.querySelector('#total').innerText = `Total`;
+      document.querySelector('#totalScore').innerText = `${score.win+score.lost+score.tie}`;
+
+      document.querySelector('#result').innerText = `${resultMsg}`;
+      document.querySelector('#result').style.color=`${resultColor}`;
+
+      document.querySelector('#computerChoice').innerText = `${computerChoice}`;
+      document.querySelector('#computerChoice').style.color='red';
+
+      document.querySelector('#computerName').innerText = `Computer Choice : `;
+      document.querySelector('#name').innerText = `${name} Choice : `;
+      document.querySelector('#userChoice').innerText = `${userChoice}`;
+      document.querySelector('#userChoice').style.color='green';
+    }
+  </script>
+</body>
+</html>
