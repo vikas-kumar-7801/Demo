@@ -112,6 +112,10 @@
   <script>
         let name = prompt('Type your name, after press OK: ');
 
+    if (name === '') {
+        name = 'User';
+      }
+
 
     let score = {
       win:0,
