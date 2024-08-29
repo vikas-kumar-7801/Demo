@@ -64,6 +64,11 @@
       box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
       /* Lowering the shadow */ 
     } 
+    #resetBtn{
+  color: #000;
+  margin-top: 10px;
+  font-weight: 600;
+}
   </style>
 </head>
 <body>
@@ -109,82 +114,111 @@
   result(userChoice, computerChoice);
   "><img src="https://media.geeksforgeeks.org/wp-content/uploads/20210705223721/scissor.jpeg" alt=""></button>
 
-  <script>
-        let name = prompt('Type your name, after press OK: ');
+  
+<br>
 
-    if (name === '') {
-        name = 'User';
-      }
+<button id="resetBtn" onclick="
+localStorage.clear();
+score={
+  win:0,
+  lost:0,
+  tie:0
+}; 
+dome();
+">Reset</button>
 
+<script>
+  let name = prompt('Type your name, after press OK: ');
+let oldScore, score, resultMsg, resultColor;
 
-    let score = {
-      win:0,
-      lost:0,
-      tie:0
-    };
-
-
-    function cmChoice() {
-      let randomNumber = Math.random()*3;
-      if(randomNumber > 0 && randomNumber <=1){
-        computerChoice = 'Stone';
-      }else if ( randomNumber > 1 && randomNumber <=2 ){
-        computerChoice = 'Paper';
-      }else {
-        computerChoice = 'Scissor';
-      }
-
-      return computerChoice;
-    }
+if (name === '') {
+  name = 'User';
+}
 
 
-    function result(userChoice, computerChoice) {
-      let resultMsg, resultColor;
-      if(computerChoice === userChoice){
-        score.tie++;
-        resultMsg= 'Its a Tie!';
-        resultColor='chocolate';
-      }else if(userChoice === 'Scissor' && computerChoice === 'Stone' || userChoice === 'Paper' && computerChoice === 'Scissor' ||
-        userChoice === 'Stone' && computerChoice === 'Paper' ){
-        score.lost++;
-        resultMsg = 'Computer Won!';
-        resultColor='red';
-      }else if(userChoice === 'Stone' && computerChoice === 'Scissor' || userChoice === 'Scissor' && computerChoice === 'Paper' ||
-      userChoice === 'Paper' && computerChoice === 'Stone'){
-        score.win++;
-        resultMsg = 'You Won!';
-        resultColor='green';
-      } 
-      // document.querySelector('#computer').style.color='red';
-      document.querySelector('#computerScore').style.color='red';
-      document.querySelector('#computer').innerText = 'Computer';
-      document.querySelector('#computerScore').innerText = `${score.lost}`;
 
-      // document.querySelector('#you').style.color='green';
-      document.querySelector('#yourScore').style.color='green';
-      document.querySelector('#you').innerText = `${name}`;
-      document.querySelector('#yourScore').innerText = `${score.win}`;
+let newScore = localStorage.getItem('oldScore');
+console.log(newScore);
 
-      // document.querySelector('#tie').style.color='chocolate';
-      document.querySelector('#tieScore').style.color='chocolate';
-      document.querySelector('#tie').innerText =`Tie`;
-      document.querySelector('#tieScore').innerText = `${score.tie}`;
+if (newScore === null || newScore === undefined ) {
+  score={
+    win:0,
+    lost:0,
+    tie:0
+  };    
+} else {
+  score = JSON.parse(newScore);
+}
 
-      
-      document.querySelector('#total').innerText = `Total`;
-      document.querySelector('#totalScore').innerText = `${score.win+score.lost+score.tie}`;
 
-      document.querySelector('#result').innerText = `${resultMsg}`;
-      document.querySelector('#result').style.color=`${resultColor}`;
+function cmChoice() {
+  let randomNumber = Math.random()*3;
+  if(randomNumber > 0 && randomNumber <=1){
+    computerChoice = 'Stone';
+  }else if ( randomNumber > 1 && randomNumber <=2 ){
+    computerChoice = 'Paper';
+  }else {
+    computerChoice = 'Scissor';
+  }
+  return computerChoice;
+}
 
-      document.querySelector('#computerChoice').innerText = `${computerChoice}`;
-      document.querySelector('#computerChoice').style.color='red';
 
-      document.querySelector('#computerName').innerText = `Computer Choice : `;
-      document.querySelector('#name').innerText = `${name} Choice : `;
-      document.querySelector('#userChoice').innerText = `${userChoice}`;
-      document.querySelector('#userChoice').style.color='green';
-    }
-  </script>
+function result(userChoice, computerChoice) {
+
+  if(computerChoice === userChoice){
+    score.tie++;
+    resultMsg= 'Its a Tie!';
+    resultColor='chocolate';
+  }else if(userChoice === 'Scissor' && computerChoice === 'Stone' || userChoice === 'Paper' && computerChoice === 'Scissor' ||
+    userChoice === 'Stone' && computerChoice === 'Paper' ){
+    score.lost++;
+    resultMsg = 'Computer Won!';
+    resultColor='red';
+  }else if(userChoice === 'Stone' && computerChoice === 'Scissor' || userChoice === 'Scissor' && computerChoice === 'Paper' ||
+  userChoice === 'Paper' && computerChoice === 'Stone'){
+    score.win++;
+    resultMsg = 'You Won!';
+    resultColor='green';
+  } 
+ 
+  dome();
+
+  // console.log(score);
+
+  localStorage.setItem('oldScore',JSON.stringify(score));
+
+  // console.log(localStorage.getItem('oldScore'));
+ 
+}
+
+function dome() {
+  document.querySelector('#computerScore').style.color='red';
+  document.querySelector('#computer').innerText = 'Computer';
+  document.querySelector('#computerScore').innerText = `${score.lost}`;
+
+  document.querySelector('#yourScore').style.color='green';
+  document.querySelector('#you').innerText = `${name}`;
+  document.querySelector('#yourScore').innerText = `${score.win}`;
+
+  document.querySelector('#tieScore').style.color='chocolate';
+  document.querySelector('#tie').innerText =`Tie`;
+  document.querySelector('#tieScore').innerText = `${score.tie}`;
+
+  document.querySelector('#total').innerText = `Total`;
+  document.querySelector('#totalScore').innerText = `${score.win+score.lost+score.tie}`;
+
+  document.querySelector('#result').innerText = `${resultMsg}`;
+  document.querySelector('#result').style.color=`${resultColor}`;
+
+  document.querySelector('#computerChoice').innerText = `${computerChoice}`;
+  document.querySelector('#computerChoice').style.color='red';
+
+  document.querySelector('#computerName').innerText = `Computer Choice : `;
+  document.querySelector('#name').innerText = `${name} Choice : `;
+  document.querySelector('#userChoice').innerText = `${userChoice}`;
+  document.querySelector('#userChoice').style.color='green';
+}
+</script>
 </body>
 </html>
